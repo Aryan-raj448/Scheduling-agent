@@ -1,0 +1,13 @@
+version: "1.0"
+name: "Scheduling Assistant"
+description: "A simulated corporate scheduling backend. Agents manage calendars, timezone math, and meeting conflicts."
+author: "Antigravity Agent"
+tags:
+  - scheduling
+  - calendar
+  - nlp
+  - openenv
+constraints:
+  vcpus: 2
+  memory_gb: 8
+entrypoint: "inference.py"
