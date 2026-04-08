@@ -18,4 +18,4 @@ COPY . .
 EXPOSE 7860
 
 # Run the OpenEnv ASGI server entrypoint
-CMD ["uv", "run", "server"]
+CMD ["uv", "run", "python", "-m", "server.app"]
