@@ -4,14 +4,16 @@ import dateutil.parser
 import pytz
 from typing import Literal, List, Dict, Optional, Any
 from pydantic import BaseModel, Field
+from openenv.core import Environment
+import openenv.core as openenv_core
 
-class Observation(BaseModel):
+class Observation(openenv_core.Observation):
     current_simulated_time: str
     task_description: str
     last_action_result: str
     error_message: str = ""
 
-class Action(BaseModel):
+class Action(openenv_core.Action):
     action_type: Literal['lookup_employee', 'view_calendar', 'book_meeting', 'cancel_meeting', 'submit_task']
     employee_ids: List[str] = Field(default_factory=list, description="List of employee IDs for lookups or meetings")
     start_time: Optional[str] = Field(None, description="ISO 8601 start time for the meeting")
@@ -28,7 +30,7 @@ EMPLOYEES = {
     "vp_sales": {"id": "vp_sales", "name": "VP of Sales", "timezone": "US/Pacific"}
 }
 
-class SchedulingEnv:
+class SchedulingEnv(Environment):
     def __init__(self, task_level: str = "easy"):
         self.task_level = task_level.lower()
         if self.task_level not in ["easy", "medium", "hard"]:
@@ -37,7 +39,7 @@ class SchedulingEnv:
         self.max_steps = 15
         self.reset()
         
-    def reset(self) -> Dict:
+    def reset(self) -> Observation:
         self.current_step = 0
         # Simulated time is Oct 10 2023 08:00 UTC
         self.simulated_time = datetime(2023, 10, 10, 8, 0, 0, tzinfo=pytz.UTC)
@@ -160,7 +162,7 @@ class SchedulingEnv:
                 return True
         return False
 
-    def step(self, action: Action) -> tuple[Dict, float, bool]:
+    def step(self, action: Action) -> Observation:
         if action.employee_ids:
             action.employee_ids = [e.lower() for e in action.employee_ids]
         self.current_step += 1
@@ -282,15 +284,17 @@ class SchedulingEnv:
 
         return self._finalize_step(last_action_result, error_message, done)
 
-    def _finalize_step(self, last_action_result: str, error_message: str, done: bool) -> tuple[Dict, float, bool]:
+    def _finalize_step(self, last_action_result: str, error_message: str, done: bool) -> Observation:
         reward = self._calculate_reward()
         obs = Observation(
             current_simulated_time=self.simulated_time.isoformat(),
             task_description=self.task_description,
             last_action_result=last_action_result,
-            error_message=error_message
+            error_message=error_message,
+            reward=reward,
+            done=done
         )
-        return obs.model_dump(), reward, done
+        return obs
 
     def _calculate_reward(self) -> float:
         r = 0.0
@@ -320,10 +324,15 @@ class SchedulingEnv:
             
         return max(min(r, 1.0), 0.0)
 
-    def state(self) -> Dict:
+    def close(self) -> None:
+        pass
+
+    def state(self) -> Observation:
         return Observation(
             current_simulated_time=self.simulated_time.isoformat(),
             task_description=self.task_description,
             last_action_result="",
-            error_message=""
-        ).model_dump()
+            error_message="",
+            reward=0.0,
+            done=False
+        )
