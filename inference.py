@@ -26,7 +26,7 @@ def log_end(success: bool, steps: int, score: float, rewards: List[float]) -> No
 
 def main():
     hf_token = os.getenv("HF_TOKEN")
-    api_key = os.getenv("OPENAI_API_KEY")
+    api_key = os.getenv("API_KEY")
     
     if api_key:
         api_base_url = os.getenv("API_BASE_URL", "https://api.openai.com/v1")
