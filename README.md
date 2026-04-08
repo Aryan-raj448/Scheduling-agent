@@ -1,10 +1,9 @@
 ---
-title: Scheduling Assistant OpenEnv
-emoji: 🗓️
+title: Scheduling Assistant
+emoji: 🚀
 colorFrom: blue
 colorTo: purple
 sdk: docker
-app_file: inference.py
 pinned: false
 tags:
   - openenv
