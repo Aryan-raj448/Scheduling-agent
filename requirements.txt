@@ -1,5 +1,0 @@
-pydantic
-openai
-python-dateutil
-pytz
-dotenv

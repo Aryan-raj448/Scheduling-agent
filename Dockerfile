@@ -1,11 +1,21 @@
-FROM python:3.10-slim
+FROM python:3.11-slim
 
 WORKDIR /app
 
-COPY requirements.txt .
-RUN pip install --no-cache-dir -r requirements.txt
+# Install uv securely from the official image
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /uvx /bin/
 
+# Copy dependency manifests
+COPY pyproject.toml uv.lock ./
+
+# Generate virtual environment and sync dependencies
+RUN uv sync --frozen
+
+# Copy the rest of the application
 COPY . .
 
-# Run inference wrapper which interacts with env.py
-CMD ["python", "inference.py"]
+# Expose Hugging Face's default web routing port
+EXPOSE 7860
+
+# Run the OpenEnv ASGI server entrypoint
+CMD ["uv", "run", "server"]

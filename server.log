@@ -1,0 +1,18 @@
+nohup: ignoring input
+warning: `VIRTUAL_ENV=.myenv` does not match the project environment path `.venv` and will be ignored; use `--active` to target the active environment instead
+warning: No `requires-python` value found in the workspace. Defaulting to `>=3.11`.
+Downloading openai (1.1MiB)
+Downloading brotli (1.4MiB)
+Downloading pydantic-core (2.0MiB)
+Downloading pygments (1.2MiB)
+Downloading beartype (1.3MiB)
+Downloading hf-xet (4.0MiB)
+Downloading gradio (35.1MiB)
+Downloading cryptography (4.3MiB)
+Downloading numpy (16.1MiB)
+Downloading pillow (6.8MiB)
+Downloading pandas (10.7MiB)
+ Downloaded openai
+ Downloaded pygments
+ Downloaded beartype
+ Downloaded brotli

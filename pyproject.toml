@@ -1,0 +1,14 @@
+[project]
+name = "scheduling-benchmark"
+version = "0.1.0"
+description = "Scheduling Assistant"
+dependencies = [
+    "pydantic",
+    "openenv-core>=0.2.0",
+    "python-dateutil",
+    "pytz",
+    "fastapi",
+    "uvicorn"
+]
+[project.scripts]
+server = "server.app:main"
