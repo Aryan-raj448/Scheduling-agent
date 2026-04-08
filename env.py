@@ -23,7 +23,7 @@ EMPLOYEES = {
     "bob": {"id": "bob", "name": "Bob", "timezone": "UTC"},
     "charlie": {"id": "charlie", "name": "Charlie", "timezone": "US/Pacific"},
     "dave": {"id": "dave", "name": "Dave", "timezone": "US/Eastern"},
-    "eve": {"id": "eve", "name": "Eve", "timezone": "Asia/Kolkata"},
+    "eve": {"id": "eve", "name": "Eve", "timezone": "US/Central"},
     "ceo": {"id": "ceo", "name": "CEO", "timezone": "US/Eastern"},
     "vp_sales": {"id": "vp_sales", "name": "VP of Sales", "timezone": "US/Pacific"}
 }
@@ -73,7 +73,7 @@ class SchedulingEnv:
             
         elif self.task_level == "medium":
             self.task_description = (
-                "Schedule a 1-hour meeting for 4 people: Charlie (PST), Dave (EST), Alice (UTC), and Eve (IST). "
+                "Schedule a 1-hour meeting for 4 people: Charlie (PST), Dave (EST), Alice (UTC), and Eve (CST). "
                 "The meeting must fall specifically within the 9-to-5 local working hours of ALL 4 participants tomorrow (Oct 11). "
                 "When finished, run submit_task."
             )
@@ -161,6 +161,8 @@ class SchedulingEnv:
         return False
 
     def step(self, action: Action) -> tuple[Dict, float, bool]:
+        if action.employee_ids:
+            action.employee_ids = [e.lower() for e in action.employee_ids]
         self.current_step += 1
         reward = 0.0
         done = False
