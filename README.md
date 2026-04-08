@@ -21,7 +21,6 @@ The environment is containerized. It should run seamlessly via Docker or bare me
 
 ### Via Bare Metal:
 ```bash
-cd scheduling_assistant
 pip install -r requirements.txt
 export OPENAI_API_KEY="sk-..."       # Or any valid proxy like Groq
 export TASK_LEVEL="medium"           # "easy" | "medium" | "hard"
