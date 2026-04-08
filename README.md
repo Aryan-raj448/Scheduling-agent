@@ -4,8 +4,6 @@ emoji: 🚀
 colorFrom: blue
 colorTo: purple
 sdk: docker
-python_version: "3.10"
-app_file: inference.py
 pinned: false
 tags: [openenv]
 ---
